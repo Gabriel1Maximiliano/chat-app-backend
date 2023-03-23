@@ -1,32 +1,24 @@
 /**
- * path:
+ * path:api/login
  */
 
 const { Router } = require('express');
+const { check } = require('express-validator');
+const { createUser, renewToken, loginUser } = require('../controllers/auth');
 
 const router = Router();
 
-router.post('/newUser', (req,res)=>{
+router.post('/newUser', createUser)
 
-    res.json({
-        ok:true,
-        msg:'newUser',
-    })
-});
+router.post('/loginUser',[
+    check('email','The name is required').isEmail(),
+    check('password','The password is required').not().isEmpty(),
+] ,loginUser );
 
-router.post('/loginUser', (req,res)=>{
+router.get('/renewToken', renewToken);
 
-    res.json({
-        ok:true,
-        msg:'loginUser',
-    })
-});
 
-router.get('/renewToken', (req,res)=>{
 
-    res.json({
-        ok:true,
-        msg:'renewToken',
-    })
-})
+
+
 module.exports = router;
