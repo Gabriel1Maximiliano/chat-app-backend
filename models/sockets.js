@@ -10,32 +10,29 @@ class Sockets {
     }
     socketEvents() {
         // On Connection
-        this.io.on('connection', (socket) => {
 
-            console.log('cliente conectado')
+        this.io.on('connection',( socket ) =>{
+         
+          //TODO Validar jwr
 
-          
+          //si el token no es válido desconectar
 
-          socket.on('request-ticket', ( data,callback ) => {
-            console.log(data)
-           const newTicket = this.ticketList.createTicket();
-           callback( newTicket );
-           
-          });
-          socket.on('next-ticket-to-work', ( user,callback ) => {
+          //TODO SABER  que usuario esta activo mediante uid
 
-            const { agente, escritorio } = user;
+          //TODO Emitir todos los usuarios conectados
 
-            const yourTicket = this.ticketList.assingTicket( agente, escritorio );
-          
-           callback( yourTicket );
+          //TODO Socket join uid
 
-           this.io.emit( 'ticket-assigned' , this.ticketList.last13 ); 
-           
-          })
+          //TODO Escuchar cuando el cliente manda un mensaje 
+          // 'personal-message'
+
+          //TODO Disconnect
+          // marcar en la DB que el usuario se desconecto
+
+          //TODO Emitir todos los usuarios conectados
 
 
-        });
+        })
 
 
 
