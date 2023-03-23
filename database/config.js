@@ -4,9 +4,7 @@ const dbConnection = async()=>{
 
     try {
 
-       await mongoose.connect( process.env.DB_CONNEXTION_STRING,{
-            
-        });
+       await mongoose.connect( process.env.DB_CONNEXTION_STRING);
 
         console.log('Db online!!');
         
