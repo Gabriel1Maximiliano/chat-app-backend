@@ -51,6 +51,7 @@ this.app.use( cors() );
 
 this.app.use( express.json() )
 this.app.use('/api/login', require('../router/auth'));
+this.app.use('/messages', require('../router/messages'))
 
 
     }

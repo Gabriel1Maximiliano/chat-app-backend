@@ -95,10 +95,30 @@ const loginUser = async( req, res = response )=>{
 
 const renewToken = async( req, res = response )=>{
 
-    res.json({
-        ok:true,
-        msg:'renewToken',
-    })
+    const uid = req.uid;
+    
+    try {
+        
+        const token = await generateJwt( uid );
+
+        const user  = await User.findById( uid );
+
+        return res.status(200).json({
+            ok:true,
+            user,
+            token,
+        })
+       
+        
+    } catch (error) {
+
+        return res.status(401).json({
+            ok:false,
+            msg:'Invalid token',
+        })
+    }
+
+   
 };
 
 module.exports = {
