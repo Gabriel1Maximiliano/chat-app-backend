@@ -18,7 +18,7 @@ const createUser = async( req, res = response )=>{
                 msg:'The email already exists',
             })
         }
-  
+   
 const user = new User( req.body );
 
 const salt = bcrypt.genSaltSync();
