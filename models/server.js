@@ -4,6 +4,7 @@ const http     =  require('http');
 const socketio = require('socket.io')
 const  Sockets = require('./sockets');
 const cors     = require('cors');
+const { dbConnection } = require('../database/config');
 require('dotenv').config();
 
 class Server {
@@ -12,12 +13,13 @@ class Server {
         this.app =  express();
         this.port = process.env.PORT || 3000;
 
-        // Http server
-      
+        //Db connection 
+        dbConnection();
 
-        // configuracion de sockets
+        // Http server
+    
         this.server = http.createServer( this.app );  
-        //configuración del  socket
+      
         this.io = socketio( this.server ,{
             cors: {
                 origin: `*`,
@@ -31,7 +33,7 @@ class Server {
 
 middlewares() {
         
-//desplegar directorio público
+
 
 this.app.use( express.static( path.resolve( __dirname + '../../public') ));
 //
@@ -46,13 +48,7 @@ this.app.use((req,res,next)=>{
   next();
 })
 
-this.app.use('/last', (req, res) => {
 
-    res.json({
-        ok:true,
-        last:this.sockets.ticketList.last13,
-    })
-})
     }
 // socketConfig() {
 //     new Sockets( this.io );
@@ -65,9 +61,9 @@ this.app.use('/last', (req, res) => {
 // inicializar sockets 
 //this.socketConfig();        
 
-// inicializar server
+
       this.server.listen(this.port, () => {
-          console.log('Server corriendo en el puerto: '+this.port)
+          console.log('Server running on port : '+this.port)
       });
     }
 }
