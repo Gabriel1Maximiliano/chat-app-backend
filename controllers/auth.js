@@ -1,7 +1,7 @@
 const { response } = require("express");
 const User = require('../models/Users');
 const bcrypt = require('bcryptjs');
-
+const { generateJwt }=require('../helpers/jwt');
 
 const createUser = async( req, res = response )=>{
 
@@ -10,7 +10,7 @@ const createUser = async( req, res = response )=>{
     try {
 
         const isEmail = await User.findOne( { email } );
-        console.log({isEmail})
+        
 
         if( isEmail ){ 
             return res.status(400).json({
@@ -26,16 +26,15 @@ const salt = bcrypt.genSaltSync();
 user.password = bcrypt.hashSync( password, salt );
 
 await user.save();
+
+const token = await generateJwt( user.id );
+
 return res.status(200).json({
     ok:true,
-    user
+    user,
+    token
     
 })
-
-
-
-
-
         
     } catch (error) {
 
@@ -46,12 +45,6 @@ return res.status(200).json({
         })
     }
 
-   return res.json({
-        ok:true,
-        msg:'newUser',
-        email,
-        password
-    })
 };
 
 const loginUser = async( req, res = response )=>{
@@ -60,10 +53,44 @@ const loginUser = async( req, res = response )=>{
    
     const { email, password } = req.body;
 
-    return res.json({
-        ok:true,
-        msg:'login user',
-    })  
+    try {
+
+        const userDb = await User.findOne( { email } );
+
+        if( !userDb ){
+            return  res.status(404).json({
+                ok:false,
+                msg:'Ups something wrong with your email and password ',
+            })  
+
+        }
+
+        const validPassword = bcrypt.compareSync( password, userDb.password );
+
+        if( !validPassword ){
+            return  res.status(400).json({
+                ok:false,
+                msg:'Ups something wrong with your email and password',
+            }) 
+        }
+
+        const token = await generateJwt( userDb.id );
+
+        return  res.status(200).json({
+            ok:true,
+            user:userDb,
+            token,
+        }) 
+        
+    } catch (error) {
+        console.log(error);
+        return  res.status(500).json({
+            ok:true,
+            msg:'Talk to the administrator',
+        })  
+    }
+
+    
 };
 
 const renewToken = async( req, res = response )=>{
