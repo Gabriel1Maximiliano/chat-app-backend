@@ -16,7 +16,7 @@ class Sockets {
           //TODO Validar jwr
 
           //si el token no es válido desconectar
-
+ 
           //TODO SABER  que usuario esta activo mediante uid
 
           //TODO Emitir todos los usuarios conectados

@@ -1,4 +1,5 @@
 const Message = require('../models/Message');
+
 const getChat = async( req, res ) => {
 
     const myId = req.uid;
