@@ -20,6 +20,23 @@ return new Promise( ( resolve, reject ) => {
 
 }
 
+const verifyJwt = ( token='' ) =>{
+
+    try {
+
+         const { uid }  = jwt.verify( token, process.env.JWT_KEY );
+         
+
+
+        return [ true, uid ]
+        
+    } catch (error) {
+        return [false];
+    }
+
+}
+
 module.exports = {
     generateJwt,
+    verifyJwt
 }

@@ -1,3 +1,5 @@
+const { verifyJwt } = require('../helpers/jwt');
+
 const TicketList = require('./ticket-list');
 
 class Sockets {
@@ -12,6 +14,15 @@ class Sockets {
         // On Connection
 
         this.io.on('connection',( socket ) =>{
+
+           
+             const  [isValid, uid] = verifyJwt( socket.handshake.query['x-token'] );
+             
+            if( !isValid ){
+                console.log('socket no identificado ' );
+                return socket.disconnect();
+            }
+            console.log('cliente conectado '+ uid)
          
           //TODO Validar jwr
 
@@ -31,7 +42,9 @@ class Sockets {
 
           //TODO Emitir todos los usuarios conectados
 
-
+            socket.on('disconnect', () => {
+                console.log('cliente desconectado');
+            })
         })
 
 
