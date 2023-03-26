@@ -20,7 +20,7 @@ const validateJwt = (req, res, next) => {
         req.uid = payload.uid;
 
 
-        next();
+        next;
 
     } catch (error) {
         console.log('soy errorerror')
