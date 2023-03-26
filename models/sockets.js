@@ -22,7 +22,7 @@ class Sockets {
                 console.log('socket no identificado ' );
                 return socket.disconnect();
             }
-            console.log('cliente conectado '+ uid)
+            console.log('cliente conectado '+ uid) 
          
           //TODO Validar jwr
 
