@@ -1,4 +1,4 @@
-const { userConnected,userDisconnected } = require('../controllers/sockets');
+const { userConnected,userDisconnected,getUsers } = require('../controllers/sockets');
 const { verifyJwt } = require('../helpers/jwt');
 
 const TicketList = require('./ticket-list');
@@ -17,6 +17,9 @@ class Sockets {
         this.io.on('connection',async( socket ) =>{
 
            
+            //TODO Validar jwr
+            //TODO SABER  que usuario esta activo mediante uid
+            //si el token no es válido desconectar
              const  [isValid, uid] = verifyJwt( socket.handshake.query['x-token'] );
              
             if( !isValid ){
@@ -24,15 +27,16 @@ class Sockets {
                 return socket.disconnect();
             }
          const data =  await userConnected( uid );
-            console.log('cliente conectado '+ data) 
+           
          
-          //TODO Validar jwr
 
-          //si el token no es válido desconectar
  
-          //TODO SABER  que usuario esta activo mediante uid
 
           //TODO Emitir todos los usuarios conectados
+          // console.log((await getUsers())
+
+          this.io.emit( 'list-users',(await getUsers())) 
+   
 
           //TODO Socket join uid
 

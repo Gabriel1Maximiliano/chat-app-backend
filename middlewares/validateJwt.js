@@ -3,10 +3,11 @@ const jwt = require('jsonwebtoken');
 
 const validateJwt = (req, res, next) => {
 
-
+ 
+ 
     try {
 
-        const token = req
+        const token = req.headers['x-token']
 
         if (!token) {
             return res.status(401).json({
@@ -20,7 +21,7 @@ const validateJwt = (req, res, next) => {
         req.uid = payload.uid;
 
 
-        next;
+        next();
 
     } catch (error) {
         console.log('soy errorerror')

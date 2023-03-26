@@ -20,15 +20,23 @@ const userDisconnected = async( uid='' )=>{
     user.onLine = false;
     
     await User.findOneAndUpdate(uid, { onLine :false })
-    console.log('user en  desconectado '+user )
+    console.log('user en  desconectado ' )
     
  return user;
  
+}
+
+const getUsers = async () =>{
+
+    const users = await User.find().sort('-onLine');
+
+    return users;
 }
 
 
 
 module.exports = { 
     userConnected,
-    userDisconnected,  
+    userDisconnected,
+    getUsers,  
 };
