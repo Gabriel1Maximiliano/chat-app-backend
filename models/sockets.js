@@ -50,7 +50,8 @@ class Sockets {
 
             socket.on('disconnect', async( socket ) => {
                 
-                const descontado =  await  userDisconnected( uid )
+                const descontado =  await  userDisconnected( uid );
+                this.io.emit( 'list-users',(await getUsers())) 
                 console.log('cliente desconectado',descontado);
             })
         })
